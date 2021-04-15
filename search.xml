@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>Trie</title>
-    <url>/2021/01/19/Trie/</url>
+    <url>/2021/04/15/Trie/</url>
     <content><![CDATA[<h2 id="Trie-的定义与应用"><a href="#Trie-的定义与应用" class="headerlink" title="Trie 的定义与应用"></a>Trie 的定义与应用</h2><ul>
 <li>Trie 相对于 HashMap 拥有时间复杂度稳定的特点。</li>
 <li>Trie 体现了空间换时间的特点。</li>
@@ -28,5 +28,11 @@
 <li><a href="https://zxi.mytechroad.com/blog/data-structure/leetcode-208-implement-trie-prefix-tree/">花花酱 Trie 讲解</a></li>
 </ol>
 ]]></content>
+      <categories>
+        <category>数据结构与算法</category>
+      </categories>
+      <tags>
+        <tag>数据结构</tag>
+      </tags>
   </entry>
 </search>
