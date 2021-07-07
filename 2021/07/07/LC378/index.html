@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.liangjh45.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="LeetCode 378 Kth Smallest Element in a Sorted Matrix题目描述 题目链接：https:&#x2F;&#x2F;leetcode.com&#x2F;problems&#x2F;kth-smallest-element-in-a-sorted-matrix&#x2F; Given an n x n matrix where each of the rows and columns are sorted">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LC378">
+<meta property="og:url" content="https://www.liangjh45.com/2021/07/07/LC378/index.html">
+<meta property="og:site_name" content="Alva">
+<meta property="og:description" content="LeetCode 378 Kth Smallest Element in a Sorted Matrix题目描述 题目链接：https:&#x2F;&#x2F;leetcode.com&#x2F;problems&#x2F;kth-smallest-element-in-a-sorted-matrix&#x2F; Given an n x n matrix where each of the rows and columns are sorted">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-07-07T14:58:25.000Z">
+<meta property="article:modified_time" content="2021-07-07T14:58:25.236Z">
+<meta property="article:author" content="Alva">
+<meta property="article:tag" content="Binary-Search">
+<meta property="article:tag" content="Heap">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://www.liangjh45.com/2021/07/07/LC378/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>LC378 | Alva</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Alva" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Alva</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">New York University</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://www.liangjh45.com/2021/07/07/LC378/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Alva">
+      <meta itemprop="description" content="Software Engineer">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Alva">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          LC378
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-07-07 22:58:25" itemprop="dateCreated datePublished" datetime="2021-07-07T22:58:25+08:00">2021-07-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/07/07/LC378/" class="post-meta-item leancloud_visitors" data-flag-title="LC378" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="LeetCode-378-Kth-Smallest-Element-in-a-Sorted-Matrix"><a href="#LeetCode-378-Kth-Smallest-Element-in-a-Sorted-Matrix" class="headerlink" title="LeetCode 378 Kth Smallest Element in a Sorted Matrix"></a>LeetCode 378 Kth Smallest Element in a Sorted Matrix</h3><h4 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h4><hr>
+<p>题目链接：<a target="_blank" rel="noopener" href="https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/">https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/</a></p>
+<p>Given an <code>n x n</code> <code>matrix</code> where each of the rows and columns are sorted in ascending order, return <em>the</em> <code>kth</code> <em>smallest element in the matrix</em>.</p>
+<p>Note that it is the <code>kth</code> smallest element <strong>in the sorted order</strong>, not the <code>kth</code> <strong>distinct</strong> element.</p>
+<p><strong>Example 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input: matrix &#x3D; [[1,5,9],[10,11,13],[12,13,15]], k &#x3D; 8</span><br><span class="line">Output: 13</span><br><span class="line">Explanation: The elements in the matrix are [1,5,9,10,11,12,13,13,15], and the 8th smallest number is 13</span><br></pre></td></tr></table></figure>
+<p>Constraints:</p>
+<ul>
+<li>n == matrix.length</li>
+<li>n == matrix[i].length</li>
+<li>1 &lt;= n &lt;= 300</li>
+<li>-109 &lt;= matrix[i][j] &lt;= 109</li>
+<li>All the rows and columns of matrix are guaranteed to be sorted in non-decreasing order.</li>
+<li>1 &lt;= k &lt;= n2</li>
+</ul>
+<p>题目需求是求出二维数组中第 $k$ 小的数，并且二维数组满足每一行和每一列都是单调递增的。</p>
+<hr>
+<h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4><h5 id="Heap"><a href="#Heap" class="headerlink" title="Heap"></a>Heap</h5><p>使用最小堆实现的优先队列 $Q$ 来解决本问题，有点像类似解决合并 $k$ 个有序链表的算法，我们的算法步骤如下所示：</p>
+<ol>
+<li>将矩阵 $M$ 中每一行的第一个元素加入到 $Q$.</li>
+<li>取出 $Q$ 中的顶部元素，并将相应行的下一个元素加入到 $Q$.</li>
+<li>步骤 2 重复 $k-1$ 次。</li>
+</ol>
+<hr>
+<h4 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h4><h5 id="Heap-1"><a href="#Heap-1" class="headerlink" title="Heap"></a>Heap</h5><h6 id="C-实现结构和类的优先队列"><a href="#C-实现结构和类的优先队列" class="headerlink" title="C++ 实现结构和类的优先队列"></a>C++ 实现结构和类的优先队列</h6><p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/16111337/declaring-a-priority-queue-in-c-with-a-custom-comparator/48587737">https://stackoverflow.com/questions/16111337/declaring-a-priority-queue-in-c-with-a-custom-comparator/48587737</a></p>
+<p>需要定义一个类，并且重载 <code>operator()</code> 方法。</p>
+<p>如果需要定义一个最小堆，可以写成如下的代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Compare</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span> <span class="params">(<span class="keyword">const</span> T&amp; t1, <span class="keyword">const</span> T&amp; t2)</span> </span>&#123; <span class="comment">// T 为具体的类型</span></span><br><span class="line">        <span class="keyword">return</span> t1 &gt; t2; <span class="comment">// 假设已重载相应的比较方法 相应的定义最大堆应该写成 t1 &lt; t2.</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// priority_queue&lt;T, vector&lt;T&gt;, Compare&gt;</span></span><br></pre></td></tr></table></figure>
+<h6 id="C-的代码实现如下所示："><a href="#C-的代码实现如下所示：" class="headerlink" title="C++ 的代码实现如下所示："></a>C++ 的代码实现如下所示：</h6><h2 id=""><a href="#" class="headerlink" title=""></a><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Compare</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span> <span class="params">(tuple&lt;<span class="keyword">int</span>, <span class="keyword">int</span>, <span class="keyword">int</span>&gt;&amp; t1, tuple&lt;<span class="keyword">int</span>, <span class="keyword">int</span>, <span class="keyword">int</span>&gt;&amp; t2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> get&lt;<span class="number">0</span>&gt;(t1) &gt; get&lt;<span class="number">0</span>&gt;(t2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">kthSmallest</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; matrix, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">int</span> rows = matrix.size();</span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">int</span> cols = matrix[<span class="number">0</span>].size();</span><br><span class="line">        <span class="built_in">priority_queue</span>&lt;tuple&lt;<span class="keyword">int</span>, <span class="keyword">int</span>, <span class="keyword">int</span>&gt;, <span class="built_in">vector</span>&lt;tuple&lt;<span class="keyword">int</span>, <span class="keyword">int</span>, <span class="keyword">int</span>&gt;&gt;, Compare&gt; pq;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> r = <span class="number">0</span>; r &lt; rows; ++r) &#123;</span><br><span class="line">            pq.push(make_tuple(matrix[r][<span class="number">0</span>], r, <span class="number">0</span>));</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; k; ++i) &#123;</span><br><span class="line">            tuple&lt;<span class="keyword">int</span>, <span class="keyword">int</span>, <span class="keyword">int</span>&gt; node = pq.top();</span><br><span class="line">            pq.pop();</span><br><span class="line">            <span class="keyword">const</span> <span class="keyword">int</span> r = get&lt;<span class="number">1</span>&gt;(node);</span><br><span class="line">            <span class="keyword">const</span> <span class="keyword">int</span> c = get&lt;<span class="number">2</span>&gt;(node);</span><br><span class="line">            <span class="keyword">if</span> (c &lt; cols<span class="number">-1</span>) &#123;</span><br><span class="line">                pq.push(make_tuple(matrix[r][c+<span class="number">1</span>], r, c+<span class="number">1</span>));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> get&lt;<span class="number">0</span>&gt;(pq.top());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></h2><h5 id="Binary-Search"><a href="#Binary-Search" class="headerlink" title="Binary-Search"></a>Binary-Search</h5><p>在本题中，二分查找采用范围查询，已知矩阵 $A$ 的最大值为 $A_{min}$，最大值为 $A_{max}$.</p>
+<ul>
+<li>使用二分查找，找出 $A^{x}$，使得 $A$ 中小于或者等于 $A^x$ 的元素的数目为 $k$.</li>
+<li>直至找到最小的 $A^x$.</li>
+</ul>
+<p>下面我们证明 $A^*$ 在 $A$ 中必然存在：</p>
+<ul>
+<li>如果 $A’ = (A_{min}+A_{max})/2$，且 #$(A_i \leq A’) &gt; k$，则说明仍然存在 $A^x &lt; A’$，使得 #$(A_i \leq A^x) = k$，此时只需要缩小 $A_{max}$ 的范围即可；</li>
+<li>如果 $A’ = (A_{min}+A_{max})/2$，且 #$(A_i \leq A’) &lt; k$，则说明仍然存在 $A^x &gt; A’$，使得 #$(A_i \leq A^x) = k$，此时只需要增大 $A_{min}$ 的范围即可；</li>
+<li>如果 $A’ = (A_{min}+A_{max})/2$，且 #$(A_i \leq A’) = k$，此时 $[A^x,A’]$ 间的值都可以满足 #$(A_i \leq A^x) = k$，我们只需要缩小 $A_{max}$ 就可以找到 $A$ 中存在的值。</li>
+</ul>
+<p>C++ 代码如下所示：</p>
+<h2 id="-1"><a href="#-1" class="headerlink" title=""></a><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">kthSmallest</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; matrix, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">int</span> n = matrix.size();</span><br><span class="line">        <span class="keyword">int</span> lo = matrix[<span class="number">0</span>][<span class="number">0</span>], hi = matrix[n<span class="number">-1</span>][n<span class="number">-1</span>] + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (lo &lt; hi) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = lo + ((hi - lo) &gt;&gt; <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">int</span> count = getCountSmallerEqual(matrix, mid);</span><br><span class="line">            <span class="keyword">if</span> (count &lt; k) &#123;</span><br><span class="line">                lo = mid + <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                hi = mid;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> lo;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getCountSmallerEqual</span><span class="params">(<span class="keyword">const</span> <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; matrix, <span class="keyword">const</span> <span class="keyword">int</span>&amp; val)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = matrix.size();</span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">0</span>, c = n<span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> r = <span class="number">0</span>; r &lt; n; ++r) &#123;</span><br><span class="line">            <span class="keyword">while</span> (c &gt;= <span class="number">0</span> &amp;&amp; matrix[r][c] &gt; val) &#123;</span><br><span class="line">                --c;</span><br><span class="line">            &#125;</span><br><span class="line">            count += (c + <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></h2><h4 id="算法分析"><a href="#算法分析" class="headerlink" title="算法分析"></a>算法分析</h4><h5 id="Heap-2"><a href="#Heap-2" class="headerlink" title="Heap"></a>Heap</h5><h6 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h6><ul>
+<li>C++ 代码中的 13-15 行遍历 $A$ 的行，时间复杂度 $O(n)$.</li>
+<li>C++ 代码中的 17-25 重复 $k-1$ 次获取最小元素的操作，每次操作均需要维护一个大小为 $n$ 的最小堆，时间复杂度为 $O(k \lg n)$.</li>
+</ul>
+<p>综合总的时间复杂度为 $O(n+k \lg n)$.</p>
+<p>考虑到 $k$ 的取值范围 $[1, n^2]$，时间复杂度也可以是 $O(n^2 \lg n)$.</p>
+<p>若 $k &lt; n$，则时间复杂度为 $O(n \lg n)$.</p>
+<h6 id="空间复杂度"><a href="#空间复杂度" class="headerlink" title="空间复杂度"></a>空间复杂度</h6><p>使用堆的算法需要维护一个大小为 $n$ 的最小堆，空间复杂度为 $O(n)$.</p>
+<h5 id="Binary-Search-1"><a href="#Binary-Search-1" class="headerlink" title="Binary-Search"></a>Binary-Search</h5><h6 id="时间复杂度-1"><a href="#时间复杂度-1" class="headerlink" title="时间复杂度"></a>时间复杂度</h6><ul>
+<li>二分查找的时间复杂度为 $O(\lg (A_{max}-A_{min}))$.</li>
+<li>内部嵌套的寻找小于或者等于算法的时间复杂度为 $O(n)$.</li>
+</ul>
+<p>因此，时间复杂度为 $O(n\lg (A_{max}-A_{min}))$.</p>
+<h6 id="空间复杂度-1"><a href="#空间复杂度-1" class="headerlink" title="空间复杂度"></a>空间复杂度</h6><p>此算法不需要额外的空间，因此空间复杂度为 $O(1)$.</p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Binary-Search/" rel="tag"># Binary-Search</a>
+              <a href="/tags/Heap/" rel="tag"># Heap</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/07/07/LC556/" rel="prev" title="LC556">
+      <i class="fa fa-chevron-left"></i> LC556
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+            <div class="headband"></div>
+            <a target="_blank" rel="noopener" href="https://github.com/Alva112358" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81MzI1OS8yOTczMw=="></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#LeetCode-378-Kth-Smallest-Element-in-a-Sorted-Matrix"><span class="nav-number">1.</span> <span class="nav-text">LeetCode 378 Kth Smallest Element in a Sorted Matrix</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">1.2.</span> <span class="nav-text">解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Heap"><span class="nav-number">1.2.1.</span> <span class="nav-text">Heap</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.3.</span> <span class="nav-text">算法实现</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Heap-1"><span class="nav-number">1.3.1.</span> <span class="nav-text">Heap</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#C-%E5%AE%9E%E7%8E%B0%E7%BB%93%E6%9E%84%E5%92%8C%E7%B1%BB%E7%9A%84%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">C++ 实现结构和类的优先队列</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#C-%E7%9A%84%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E5%A6%82%E4%B8%8B%E6%89%80%E7%A4%BA%EF%BC%9A"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">C++ 的代码实现如下所示：</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-number"></span> <span class="nav-text">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+struct Compare &amp;#123;
+    bool operator() (tuple&lt;int, int, int&gt;&amp; t1, tuple&lt;int, int, int&gt;&amp; t2) &amp;#123;
+        return get&lt;0&gt;(t1) &gt; get&lt;0&gt;(t2);
+    &amp;#125;
+&amp;#125;;
+
+class Solution &amp;#123;
+public:
+    int kthSmallest(vector&lt;vector&lt;int&gt;&gt;&amp; matrix, int k) &amp;#123;
+        const int rows &#x3D; matrix.size();
+        const int cols &#x3D; matrix[0].size();
+        priority_queue&lt;tuple&lt;int, int, int&gt;, vector&lt;tuple&lt;int, int, int&gt;&gt;, Compare&gt; pq;
+        for (int r &#x3D; 0; r &lt; rows; ++r) &amp;#123;
+            pq.push(make_tuple(matrix[r][0], r, 0));
+        &amp;#125;
+        
+        for (int i &#x3D; 1; i &lt; k; ++i) &amp;#123;
+            tuple&lt;int, int, int&gt; node &#x3D; pq.top();
+            pq.pop();
+            const int r &#x3D; get&lt;1&gt;(node);
+            const int c &#x3D; get&lt;2&gt;(node);
+            if (c &lt; cols-1) &amp;#123;
+                pq.push(make_tuple(matrix[r][c+1], r, c+1));
+            &amp;#125;
+        &amp;#125;
+        
+        return get&lt;0&gt;(pq.top());
+    &amp;#125;
+&amp;#125;;
+</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Binary-Search"><span class="nav-number">0.0.1.</span> <span class="nav-text">Binary-Search</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#-1"><span class="nav-number"></span> <span class="nav-text">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+class Solution &amp;#123;
+public:
+    int kthSmallest(vector&lt;vector&lt;int&gt;&gt;&amp; matrix, int k) &amp;#123;
+        const int n &#x3D; matrix.size();
+        int lo &#x3D; matrix[0][0], hi &#x3D; matrix[n-1][n-1] + 1;
+        while (lo &lt; hi) &amp;#123;
+            int mid &#x3D; lo + ((hi - lo) &gt;&gt; 1);
+            int count &#x3D; getCountSmallerEqual(matrix, mid);
+            if (count &lt; k) &amp;#123;
+                lo &#x3D; mid + 1;
+            &amp;#125; else &amp;#123;
+                hi &#x3D; mid;
+            &amp;#125;
+        &amp;#125;
+        return lo;
+    &amp;#125;
+    
+private:
+    int getCountSmallerEqual(const vector&lt;vector&lt;int&gt;&gt;&amp; matrix, const int&amp; val) &amp;#123;
+        int n &#x3D; matrix.size();
+        int count &#x3D; 0, c &#x3D; n-1;
+        for (int r &#x3D; 0; r &lt; n; ++r) &amp;#123;
+            while (c &gt;&#x3D; 0 &amp;&amp; matrix[r][c] &gt; val) &amp;#123;
+                --c;
+            &amp;#125;
+            count +&#x3D; (c + 1);
+        &amp;#125;
+        return count;
+    &amp;#125;
+&amp;#125;;
+</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90"><span class="nav-number">0.1.</span> <span class="nav-text">算法分析</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Heap-2"><span class="nav-number">0.1.1.</span> <span class="nav-text">Heap</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="nav-number">0.1.1.1.</span> <span class="nav-text">时间复杂度</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="nav-number">0.1.1.2.</span> <span class="nav-text">空间复杂度</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Binary-Search-1"><span class="nav-number">0.1.2.</span> <span class="nav-text">Binary-Search</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6-1"><span class="nav-number">0.1.2.1.</span> <span class="nav-text">时间复杂度</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6-1"><span class="nav-number">0.1.2.2.</span> <span class="nav-text">空间复杂度</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Alva</p>
+  <div class="site-description" itemprop="description">Software Engineer</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Alva112358" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Alva112358" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/alva.liangjh45@gmail.com" title="E-Mail → alva.liangjh45@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Alva</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+<script>
+  (function() {
+    function leancloudSelector(url) {
+      url = encodeURI(url);
+      return document.getElementById(url).querySelector('.leancloud-visitors-count');
+    }
+
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.id);
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            leancloudSelector(url).innerText = counter.time + 1;
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              });
+          } else {
+              leancloudSelector(url).innerText = 'Counter not initialized! More info at console err msg.';
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.id);
+      });
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url: { '$in': entries } })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          for (let url of entries) {
+            let target = results.find(item => item.url === url);
+            leancloudSelector(url).innerText = target ? target.time : 0;
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"nAxhYF6OzRgHqcC8EWagVl2h-gzGzoHsz","app_key":"zTXciNGOdvouf2kxhFKpc4J9","server_url":null,"security":true};
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : app_id,
+            'X-LC-Key'    : app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    }
+
+    let api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${app_id.slice(0, 8).toLowerCase()}.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(response => response.json())
+        .then(({ api_server }) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>
