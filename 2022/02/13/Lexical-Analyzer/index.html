@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <meta charset="utf-8">
+    
+    <title>Lexical-Analyzer | Junhua&#39;s Blog</title>
+    
+    
+        <meta name="keywords" content="Lexical-Analyzer" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="This article introduces lexical analyzer in compiler.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lexical-Analyzer">
+<meta property="og:url" content="https://liangjh45.com/2022/02/13/Lexical-Analyzer/index.html">
+<meta property="og:site_name" content="Junhua&#39;s Blog">
+<meta property="og:description" content="This article introduces lexical analyzer in compiler.">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-02-14T05:48:49.000Z">
+<meta property="article:modified_time" content="2023-03-27T06:34:01.945Z">
+<meta property="article:author" content="Junhua Liang">
+<meta name="twitter:card" content="summary">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="Junhua&#39;s Blog" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Junhua&#39;s Blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">Main</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+            </nav>
+            
+            <div id="search-form-wrap">
+
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="https://liangjh45.com"></form>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">Main</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                <td>
+                    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="https://liangjh45.com"></form>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>categories</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Algorithm
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2021/08/17/Analysis-Algorithm/">Analysis of Algorithms</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            Compiler
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2022/02/13/Syntax-Analysis/">Syntax-Analysis</a></li>  <li class="file active"><a href="/2022/02/13/Lexical-Analyzer/">Lexical-Analyzer</a></li>  <li class="file"><a href="/2022/03/01/Bottom-Up-Parser/">Bottom-Up Parser</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Computer Architecture
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2022/03/01/Multicore/">Multicore</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Machine Learning
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2022/03/02/PageRank/">PageRank</a></li>  <li class="file"><a href="/2022/03/24/SVM-1/">SVM</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-Lexical-Analyzer" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/Compiler/">Compiler</a>
+    </div>
+
+                        
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2022/02/13/Lexical-Analyzer/">
+            <time datetime="2022-02-14T05:48:49.000Z" itemprop="datePublished">2022-02-14</time>
+        </a>
+    </div>
+
+
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            Lexical-Analyzer
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+        
+        
+            <h2 id="lexical-analyzer">Lexical Analyzer</h2>
+<hr />
+<h3 id="main-task">Main Task</h3>
+<p>The main task of the lexical analyzer is to read the input characters of the source program, group them into lexemes, and produce as output a sequence of tokens for each lexeme in the source program.</p>
+<p>A cascade of two processes:</p>
+<ul>
+<li>Scanning</li>
+<li>Lexical Analysis</li>
+</ul>
+<hr />
+<h3 id="terms">Terms</h3>
+<h4 id="token">Token</h4>
+<p>A <em>token</em> is a pair consisting of a token name and an optional attribute value.</p>
+<h4 id="pattern">Pattern</h4>
+<p>A <em>pattern</em> is a description of the form that the lexemes of a token may take.</p>
+<h4 id="lexeme">Lexeme</h4>
+<p>A <em>lexeme</em> is a sequence of characters in the source program that matches the pattern for a token and is identified by the lexical analyzer as an instance of that token.</p>
+<hr />
+<h3 id="operations-on-languages">Operations on Languages</h3>
+<h4 id="union">Union</h4>
+<p>Union of <span class="math inline">\(L\)</span> and <span class="math inline">\(M\)</span> is defined as follows:</p>
+<p><span class="math inline">\(L \cup M=\{s|s \in L \; \text{or} \; s \in M\}\)</span></p>
+<h4 id="concatenation">Concatenation</h4>
+<p>Concatenation of <span class="math inline">\(L\)</span> and <span class="math inline">\(M\)</span> is defined as follows:</p>
+<p><span class="math inline">\(LM=\{st|s \in L \; \text{and} \; t \in M\}\)</span></p>
+<h4 id="kleene-closure">Kleene Closure</h4>
+<p>Kleene Closure of <span class="math inline">\(L\)</span> is defined as follows:</p>
+<p><span class="math inline">\(L^*=\bigcup_{i=0}^{\infty}L^i\)</span></p>
+<hr />
+<h3 id="regular-expressions">Regular Expressions</h3>
+<h4 id="definition">Definition</h4>
+<p><strong>Regular Expressions</strong> is a set of languages that can be used to capture certain languages.</p>
+<h4 id="atomic-res">Atomic REs</h4>
+<ul>
+<li><span class="math inline">\(\varepsilon\)</span> is used to match empty string.</li>
+<li>For any symbol <span class="math inline">\(a\)</span>, <strong>a</strong> is a RE that matches only <span class="math inline">\(a\)</span>.</li>
+</ul>
+<h4 id="compound-res">Compound REs</h4>
+<ul>
+<li><span class="math inline">\(R_1R_2\)</span> is the concatenations of languages <span class="math inline">\(R_1\)</span> and <span class="math inline">\(R_2\)</span>.</li>
+<li><span class="math inline">\(R_1|R_2\)</span> is the union of languages of <span class="math inline">\(R_1\)</span> and <span class="math inline">\(R_2\)</span>.</li>
+<li><span class="math inline">\(R^*\)</span> is the Kleene Closure of language <span class="math inline">\(R\)</span>.</li>
+<li><span class="math inline">\((R)\)</span> is the same as <span class="math inline">\(R\)</span>.</li>
+</ul>
+<p>The precedence is <span class="math inline">\((R) &gt; R^* &gt; R_1R_2 &gt; R_1|R_2\)</span>.</p>
+<h4 id="examples">Examples</h4>
+<ul>
+<li><p>Email</p>
+<p><span class="math inline">\(aa^*(.aa^*)^*@aa^*.aa^*(.aa^*)^*\)</span></p></li>
+</ul>
+<hr />
+<h3 id="finite-automata">Finite Automata</h3>
+<h4 id="basic-functions">Basic Functions</h4>
+<ul>
+<li><p><span class="math inline">\(\varepsilon-\text{closure(s)}\)</span></p>
+<p>Set of NFA states reachable from NFA state <span class="math inline">\(s\)</span> on <span class="math inline">\(\varepsilon-\text{transitions}\)</span> alone.</p></li>
+<li><p><span class="math inline">\(\varepsilon-\text{closure(T)}\)</span></p>
+<p><span class="math inline">\(\bigcup_{s \in T} \varepsilon-\text{closure}(s)\)</span>.</p></li>
+<li><p><span class="math inline">\(\text{move}(T,a)\)</span></p></li>
+</ul>
+<h4 id="nondeterministic-finite-automata-nfa">Nondeterministic Finite Automata (NFA)</h4>
+<p>Definition:</p>
+<ol type="1">
+<li>A finite set of states <span class="math inline">\(S\)</span>.</li>
+<li>A set of input symbols <span class="math inline">\(\Sigma\)</span>, the input alphabet and <span class="math inline">\(\varepsilon \notin \Sigma\)</span>.</li>
+<li>A transition function that gives, for each state, and for each symbol in <span class="math inline">\(\Sigma \cup \{\varepsilon\}\)</span> a set of next state.</li>
+<li>A state <span class="math inline">\(s_0\)</span> from <span class="math inline">\(S\)</span> that is distinguished as the start state.</li>
+<li>A set of states <span class="math inline">\(F \subseteq S\)</span>, that is distinguished as the accepting state.</li>
+</ol>
+<h4 id="deterministic-finite-automata-dfa">Deterministic Finite Automata (DFA)</h4>
+<p>A DFA is a special case of DFA, where :</p>
+<ol type="1">
+<li>There are no moves on <span class="math inline">\(\varepsilon\)</span>.</li>
+<li>For each state <span class="math inline">\(s\)</span> and input symbol <span class="math inline">\(a\)</span>, there is exactly one edge out of <span class="math inline">\(s\)</span> labeled <span class="math inline">\(a\)</span>.</li>
+</ol>
+<p><em>End of this article.</em></p>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/2022/03/01/Multicore/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Newer</strong>
+            <div class="article-nav-title">
+                
+                    Multicore
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2022/02/13/Syntax-Analysis/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">Syntax-Analysis</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+        <section id="comments"> 
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+ </section>
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            Junhua Liang &copy; 2023 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+        </div>
+    </div>
+</footer>
+
+        
+    
+    <script>
+    var disqus_config = function () {
+        
+            this.page.url = 'https://liangjh45.com/2022/02/13/Lexical-Analyzer/';
+        
+        this.page.identifier = 'Lexical-Analyzer';
+    };
+    (function() { 
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'https-liangjh45-com' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>

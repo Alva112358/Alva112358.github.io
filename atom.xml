@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Junhua&#39;s Blog</title>
+  <icon>https://liangjh45.com/icon.png</icon>
+  
+  <link href="https://liangjh45.com/atom.xml" rel="self"/>
+  
+  <link href="https://liangjh45.com/"/>
+  <updated>2023-03-27T06:34:59.866Z</updated>
+  <id>https://liangjh45.com/</id>
+  
+  <author>
+    <name>Junhua Liang</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>SVM</title>
+    <link href="https://liangjh45.com/2022/03/24/SVM-1/"/>
+    <id>https://liangjh45.com/2022/03/24/SVM-1/</id>
+    <published>2022-03-25T05:55:11.000Z</published>
+    <updated>2023-03-27T06:34:59.866Z</updated>
+    
+    
+    <summary type="html">This article introduces some theory of SVM.</summary>
+    
+    
+    
+    <category term="Machine Learning" scheme="https://liangjh45.com/categories/Machine-Learning/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>PageRank</title>
+    <link href="https://liangjh45.com/2022/03/02/PageRank/"/>
+    <id>https://liangjh45.com/2022/03/02/PageRank/</id>
+    <published>2022-03-02T22:26:08.000Z</published>
+    <updated>2023-03-27T06:54:59.508Z</updated>
+    
+    
+    <summary type="html">This article aims to combine the homework of MTCS at NYU to simply descripe the PageRank algorithm.</summary>
+    
+    
+    
+    <category term="Machine Learning" scheme="https://liangjh45.com/categories/Machine-Learning/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Bottom-Up Parser</title>
+    <link href="https://liangjh45.com/2022/03/01/Bottom-Up-Parser/"/>
+    <id>https://liangjh45.com/2022/03/01/Bottom-Up-Parser/</id>
+    <published>2022-03-02T00:25:23.000Z</published>
+    <updated>2023-03-27T06:33:44.638Z</updated>
+    
+    
+    <summary type="html">This article introduces bottom-up parser in compiler.</summary>
+    
+    
+    
+    <category term="Compiler" scheme="https://liangjh45.com/categories/Compiler/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Multicore</title>
+    <link href="https://liangjh45.com/2022/03/01/Multicore/"/>
+    <id>https://liangjh45.com/2022/03/01/Multicore/</id>
+    <published>2022-03-02T00:19:42.000Z</published>
+    <updated>2023-03-27T06:58:20.639Z</updated>
+    
+    
+    <summary type="html">Multicore Processor notes in NYU Course.</summary>
+    
+    
+    
+    <category term="Computer Architecture" scheme="https://liangjh45.com/categories/Computer-Architecture/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Lexical-Analyzer</title>
+    <link href="https://liangjh45.com/2022/02/13/Lexical-Analyzer/"/>
+    <id>https://liangjh45.com/2022/02/13/Lexical-Analyzer/</id>
+    <published>2022-02-14T05:48:49.000Z</published>
+    <updated>2023-03-27T06:34:01.945Z</updated>
+    
+    
+    <summary type="html">This article introduces lexical analyzer in compiler.</summary>
+    
+    
+    
+    <category term="Compiler" scheme="https://liangjh45.com/categories/Compiler/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Syntax-Analysis</title>
+    <link href="https://liangjh45.com/2022/02/13/Syntax-Analysis/"/>
+    <id>https://liangjh45.com/2022/02/13/Syntax-Analysis/</id>
+    <published>2022-02-14T05:48:28.000Z</published>
+    <updated>2023-03-27T06:35:12.214Z</updated>
+    
+    
+    <summary type="html">This article introduces general syntax analysis in compiler.</summary>
+    
+    
+    
+    <category term="Compiler" scheme="https://liangjh45.com/categories/Compiler/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Analysis of Algorithms</title>
+    <link href="https://liangjh45.com/2021/08/17/Analysis-Algorithm/"/>
+    <id>https://liangjh45.com/2021/08/17/Analysis-Algorithm/</id>
+    <published>2021-08-18T03:53:36.000Z</published>
+    <updated>2023-03-27T06:33:20.497Z</updated>
+    
+    
+    <summary type="html">Formula of the Master Theorem.</summary>
+    
+    
+    
+    <category term="Algorithm" scheme="https://liangjh45.com/categories/Algorithm/"/>
+    
+    
+  </entry>
+  
+</feed>

@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <meta charset="utf-8">
+    
+    <title>Multicore | Junhua&#39;s Blog</title>
+    
+    
+        <meta name="keywords" content="Multicore" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="Multicore Processor notes in NYU Course.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Multicore">
+<meta property="og:url" content="https://liangjh45.com/2022/03/01/Multicore/index.html">
+<meta property="og:site_name" content="Junhua&#39;s Blog">
+<meta property="og:description" content="Multicore Processor notes in NYU Course.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://liangjh45.com/2022/03/01/Multicore/PRAM.png">
+<meta property="article:published_time" content="2022-03-02T00:19:42.000Z">
+<meta property="article:modified_time" content="2023-03-27T06:58:20.639Z">
+<meta property="article:author" content="Junhua Liang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://liangjh45.com/2022/03/01/Multicore/PRAM.png">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="Junhua&#39;s Blog" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Junhua&#39;s Blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">Main</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+            </nav>
+            
+            <div id="search-form-wrap">
+
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="https://liangjh45.com"></form>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">Main</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                <td>
+                    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="https://liangjh45.com"></form>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>categories</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Algorithm
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2021/08/17/Analysis-Algorithm/">Analysis of Algorithms</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Compiler
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2022/02/13/Syntax-Analysis/">Syntax-Analysis</a></li>  <li class="file"><a href="/2022/02/13/Lexical-Analyzer/">Lexical-Analyzer</a></li>  <li class="file"><a href="/2022/03/01/Bottom-Up-Parser/">Bottom-Up Parser</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            Computer Architecture
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file active"><a href="/2022/03/01/Multicore/">Multicore</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Machine Learning
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2022/03/02/PageRank/">PageRank</a></li>  <li class="file"><a href="/2022/03/24/SVM-1/">SVM</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-Multicore" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/Computer-Architecture/">Computer Architecture</a>
+    </div>
+
+                        
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2022/03/01/Multicore/">
+            <time datetime="2022-03-02T00:19:42.000Z" itemprop="datePublished">2022-03-01</time>
+        </a>
+    </div>
+
+
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            Multicore
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+        
+        
+            <h2 id="multicore">Multicore</h2>
+<hr />
+<h3 id="dag-model">DAG Model</h3>
+<h4 id="definition">Definition</h4>
+<ul>
+<li><strong>(Node)</strong> Vertices.
+<ul>
+<li>A task.</li>
+<li>An instruction.</li>
+</ul></li>
+<li><strong>(Edges)</strong> Directed arrows indicate dependencies among tasks.
+<ul>
+<li>Source must finish before destination.</li>
+<li>Node A <span class="math inline">\(\rightarrow\)</span> Node B means that B cannot be scheduled unless A is finished.</li>
+</ul></li>
+</ul>
+<h4 id="performance-measures">Performance Measures</h4>
+<p>Given a graph <span class="math inline">\(G\)</span>, a scheduler <span class="math inline">\(S\)</span>, and <span class="math inline">\(P\)</span> processors.</p>
+<ul>
+<li><span class="math inline">\(T_P(S)\)</span> : time on <span class="math inline">\(P\)</span> processors using scheduler <span class="math inline">\(S\)</span>.</li>
+<li><span class="math inline">\(T_P\)</span> : time on <span class="math inline">\(P\)</span> processors using the best scheduler.</li>
+<li><span class="math inline">\(T_1\)</span> : time one a single processor (sequential cost).
+<ul>
+<li>Work : the total number of operations executed by a computation.</li>
+<li>Time to run sequentially.</li>
+</ul></li>
+<li><span class="math inline">\(T_{\infty}\)</span> : time assuming infinite resources.
+<ul>
+<li>Depth : the longest chain of sequential dependencies in the parallel DAG (Span).</li>
+</ul></li>
+</ul>
+<h5 id="work-law">Work Law</h5>
+<p><span class="math display">\[
+\frac{T_1}{T_P} \leq P
+\]</span></p>
+<h5 id="depth-law">Depth Law</h5>
+<p>Limited by sequential bottleneck. <span class="math display">\[
+T_P \geq T_{\infty}
+\]</span></p>
+<h5 id="parallelism">Parallelism</h5>
+<p><span class="math display">\[
+\text{Parallelism}=\frac{T_1}{T_{\infty}}
+\]</span></p>
+<h5 id="maximum-speedup-possible">Maximum speedup possible</h5>
+<p><span class="math display">\[
+\text{Speedup} \ \frac{T_1}{T_P} \leq \frac{T_1}{T_\infty} \ \text{Parallelism}
+\]</span></p>
+<h4 id="summary">Summary</h4>
+<ul>
+<li>Sequential sections limit the parallel effectiveness.</li>
+<li>Analyse the <strong>Work</strong> and <strong>Depth</strong> of your algorithm.</li>
+</ul>
+<hr />
+<h3 id="limits-of-parallel-computation">Limits of Parallel Computation</h3>
+<h4 id="theoretical-limits">Theoretical Limits</h4>
+<h5 id="amdahls-law"><span id="Amdahl">Amdahl's Law</span></h5>
+<p>The formula for speedup is given as follows : <span class="math display">\[
+\text{Speedup}(f,c) = \frac{1}{(1-f)+\frac{f}{c}}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(f\)</span> is the parallel portion of execution.</li>
+<li><span class="math inline">\((1-f)\)</span> is the sequential portion of execution.</li>
+<li><span class="math inline">\(c\)</span> is the number of cores used.</li>
+</ul>
+<p>With Amdahl's Law, we get :</p>
+<ul>
+<li>Speedup is limited by sequential code.</li>
+<li>Even a small percentage of sequential code can greatly limit potential speedup.</li>
+</ul>
+<h5 id="gustafsons-law">Gustafson's Law</h5>
+<p>Any sufficiently large problem can be parallelized effectively : <span class="math display">\[
+\text{Speedup}(f, c)=fc+(1-f)
+\]</span> Parameters descriptions are as <a href="#Amdahl">Amdahl's Law</a>.</p>
+<p>Key assumption: <span class="math inline">\(f\)</span> increases as problem size increases.</p>
+<h5 id="greedy-scheduler">Greedy Scheduler</h5>
+<p>Given <span class="math inline">\(P\)</span> processors, a greedy scheduler executes any computation with work <span class="math inline">\(T_1\)</span> and critical path length <span class="math inline">\(T_{\infty}\)</span> in time : <span class="math display">\[
+T_{P}(\text{Greedy}) \leq \frac{T_1}{P} + T_{\infty}
+\]</span> Once <span class="math inline">\(T_{\infty}\)</span> becomes significant in comparison to <span class="math inline">\(T_1 / P\)</span>, the ability to increase parallelism is reduced.</p>
+<h4 id="practical-limits">Practical Limits</h4>
+<ul>
+<li>Load balancing (waiting).</li>
+<li>Scheduling (shared processors or memory).</li>
+<li>Cost of communications.</li>
+<li>I/O.</li>
+</ul>
+<hr />
+<h3 id="programming-models">Programming Models</h3>
+<h4 id="pram-model">PRAM Model</h4>
+<h5 id="definition-1">Definition</h5>
+<ul>
+<li>Parallel Random Access Machine.</li>
+<li>Shared memory.</li>
+<li>A synchronous MIMD.</li>
+</ul>
+<img src="/2022/03/01/Multicore/PRAM.png" class="">
+<h5 id="pros">Pros</h5>
+<ul>
+<li>No communication cost.
+<ul>
+<li>Infinite bandwidth.</li>
+<li>Zero latency.</li>
+</ul></li>
+<li>Infinite memory.</li>
+<li>Any operation takes one unit of time.</li>
+<li>Different protocols can be used for reading and writing shared memory.</li>
+<li>Simple to use.</li>
+</ul>
+<h5 id="cons">Cons</h5>
+<ul>
+<li>Unrealistic - Performance prediction is inaccurate.</li>
+</ul>
+<h4 id="logp">LogP</h4>
+<h5 id="features">Features</h5>
+<ul>
+<li>Distributed Memory.</li>
+<li>No specification of interconnection network.</li>
+<li>Based on:
+<ul>
+<li><strong>L</strong>atency of communication.</li>
+<li><strong>O</strong>verhead in processing transmitted/received messages.</li>
+<li><strong>G</strong>ap between consecutive transmissions. (bandwidth limitation).</li>
+<li><strong>P</strong>rocessing power.</li>
+</ul></li>
+</ul>
+<h5 id="pros-1">Pros</h5>
+<ul>
+<li>Simple, 4 parameters.</li>
+<li>Can easily be used to guide the algorithm development.</li>
+<li>Can sometimes underestimate communication time.</li>
+</ul>
+<h4 id="bsp-model">BSP Model</h4>
+<p><strong>B</strong>ulk <strong>S</strong>ynchronous <strong>P</strong>arallel</p>
+<h5 id="components">components</h5>
+<ul>
+<li>A set of processor-memory pairs.</li>
+<li>A communication network that delivers messages in a point-to-point manner.</li>
+<li>Mechanism for barrier synchronization for all or a subset of the processes.</li>
+</ul>
+<h5 id="supersteps">Supersteps</h5>
+<p>Each superset consists of three ordered stages:</p>
+<ul>
+<li>Computation. (Local Computation)</li>
+<li>Communication. (Global Communication)</li>
+<li>Barrier synchronization.</li>
+</ul>
+<h5 id="parameters">Parameters</h5>
+<ul>
+<li><span class="math inline">\(p:\)</span> number of processors.</li>
+<li><span class="math inline">\(s:\)</span> processor computation speed (flops/s).</li>
+<li><span class="math inline">\(h:\)</span> the maximum number of incoming or outgoing messages per processor.</li>
+<li><span class="math inline">\(g:\)</span> the cost of sending a message.</li>
+<li><span class="math inline">\(l:\)</span> time to do a barrier synchronization.</li>
+</ul>
+<p>Assume <span class="math inline">\(w_i\)</span> is the computation time for work on processor <span class="math inline">\(i\)</span> during a superstep. Then the cost of a superstep is as follows: <span class="math display">\[
+\max_{1 \leq i \leq p}(w_i)+\max_{1 \leq i \leq p}(h_ig)+l
+\]</span></p>
+<h5 id="proscons">Pros/Cons</h5>
+<ul>
+<li>Simple.</li>
+<li>Predictable performance.</li>
+<li>Not very good if locality is important</li>
+<li>BSP does not distinguish between sending 1 message of length <span class="math inline">\(m\)</span>, or <span class="math inline">\(m\)</span> messages of length 1.</li>
+</ul>
+<p><em>End of this article.</em></p>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/2022/03/01/Bottom-Up-Parser/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Newer</strong>
+            <div class="article-nav-title">
+                
+                    Bottom-Up Parser
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2022/02/13/Lexical-Analyzer/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">Lexical-Analyzer</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+        <section id="comments"> 
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+ </section>
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            Junhua Liang &copy; 2023 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+        </div>
+    </div>
+</footer>
+
+        
+    
+    <script>
+    var disqus_config = function () {
+        
+            this.page.url = 'https://liangjh45.com/2022/03/01/Multicore/';
+        
+        this.page.identifier = 'Multicore';
+    };
+    (function() { 
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'https-liangjh45-com' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>

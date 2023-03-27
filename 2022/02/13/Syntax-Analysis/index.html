@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <meta charset="utf-8">
+    
+    <title>Syntax-Analysis | Junhua&#39;s Blog</title>
+    
+    
+        <meta name="keywords" content="Syntax-Analysis" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="This article introduces general syntax analysis in compiler.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Syntax-Analysis">
+<meta property="og:url" content="https://liangjh45.com/2022/02/13/Syntax-Analysis/index.html">
+<meta property="og:site_name" content="Junhua&#39;s Blog">
+<meta property="og:description" content="This article introduces general syntax analysis in compiler.">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-02-14T05:48:28.000Z">
+<meta property="article:modified_time" content="2023-03-27T06:35:12.214Z">
+<meta property="article:author" content="Junhua Liang">
+<meta name="twitter:card" content="summary">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="Junhua&#39;s Blog" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Junhua&#39;s Blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">Main</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+            </nav>
+            
+            <div id="search-form-wrap">
+
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="https://liangjh45.com"></form>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">Main</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                <td>
+                    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="https://liangjh45.com"></form>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>categories</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Algorithm
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2021/08/17/Analysis-Algorithm/">Analysis of Algorithms</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            Compiler
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file active"><a href="/2022/02/13/Syntax-Analysis/">Syntax-Analysis</a></li>  <li class="file"><a href="/2022/02/13/Lexical-Analyzer/">Lexical-Analyzer</a></li>  <li class="file"><a href="/2022/03/01/Bottom-Up-Parser/">Bottom-Up Parser</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Computer Architecture
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2022/03/01/Multicore/">Multicore</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Machine Learning
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2022/03/02/PageRank/">PageRank</a></li>  <li class="file"><a href="/2022/03/24/SVM-1/">SVM</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-Syntax-Analysis" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/Compiler/">Compiler</a>
+    </div>
+
+                        
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2022/02/13/Syntax-Analysis/">
+            <time datetime="2022-02-14T05:48:28.000Z" itemprop="datePublished">2022-02-14</time>
+        </a>
+    </div>
+
+
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            Syntax-Analysis
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+        
+        
+            <h2 id="definition">Definition</h2>
+<p>Parsing is the process of determining how a string of terminals can be generated by a grammar. Most parser methods fall into two classes, top-down and bottom-up.</p>
+<ul>
+<li><p>Top-down : The popularity of top-down parsers is due to the fact that efficient parsers can be constructed more easily by hand using top-down methods.</p></li>
+<li><p>Bottom-up : Bottom-up parsing can handle a larger class of grammars and translation schemes, so <strong>software tools for generating parsers directly from grammars</strong> often use bottom-up methods.</p></li>
+</ul>
+<hr />
+<h2 id="context-free-grammar">Context Free Grammar</h2>
+<h3 id="components">Components</h3>
+<ol type="1">
+<li><p>Terminals</p>
+<p>Terminals are the basic symbols from which strings are formed.</p></li>
+<li><p>Nonterminals</p>
+<p>Nonterminals are the syntactic variables denoted sets of strings.</p></li>
+<li><p>Start-Symbol</p>
+<p>The chosen nonterminals used as the start for production.</p></li>
+<li><p>Productions</p>
+<p>The productions of a grammar specify the manner from which the terminals and nonterminals can be combined to form strings.</p></li>
+</ol>
+<h3 id="ambiguity">Ambiguity</h3>
+<p>A grammar produces <strong>more than one</strong> parse tree (leftmost derivation or rightmost derivation) for one sentence is said to be ambiguity.</p>
+<p>For most parsers, it is desirable that the grammar be made unambiguous, for if it is not, we cannot uniquely determine which parse tree to select for a sentence.</p>
+<hr />
+<h2 id="predictive-parsing">Predictive Parsing</h2>
+<p>Predictive parsing relies on information about the rst symbols that can be generated by a production body.</p>
+<hr />
+<h2 id="eliminate-left-recursion">Eliminate Left Recursion</h2>
+<h3 id="simplified-version">Simplified Version</h3>
+<p>If <span class="math inline">\(A \rightarrow A \alpha \ | \ \beta\)</span> ,</p>
+<p>then it could be written as</p>
+<p><span class="math inline">\(A \rightarrow \beta A&#39;\)</span></p>
+<p><span class="math inline">\(A&#39; \rightarrow \alpha A&#39; \ | \ \varepsilon\)</span></p>
+<h3 id="completed-version">Completed Version</h3>
+<p>If $A A _1  |  A _2  |   |  _1  |  _2  |   |  _n   $,</p>
+<p>then it could be written as</p>
+<p><span class="math inline">\(A \rightarrow \beta_1A&#39; \ | \ \beta_2A&#39; \ | \ \dots \ | \ \beta_nA&#39;\)</span></p>
+<p><span class="math inline">\(A&#39; \rightarrow \alpha_1A&#39; \ | \ \alpha_2 A&#39; \ | \ \dots \ | \ \alpha_mA&#39; \ | \ \varepsilon\)</span></p>
+<h3 id="example">Example</h3>
+<p>Eliminate the left recursion of the following induction.</p>
+<p><span class="math inline">\(S \rightarrow Aa \ | \ b\)</span></p>
+<p><span class="math inline">\(A \rightarrow Ac \ | \ Sd \ | \ \varepsilon\)</span></p>
+<p>The solution is given as follows:</p>
+<p>We observe that <span class="math inline">\(S\)</span> in <span class="math inline">\(A \rightarrow Ac \ | \ Sd \ | \ \varepsilon\)</span> could be replaced into <span class="math inline">\(A \rightarrow Ac \ | \ Aad \ | \ bd \ | \ \varepsilon\)</span>, then we could eliminate the left recursion using the completed version.</p>
+<p>Hence, the result after eliminating the left recursion is as follows:</p>
+<p><span class="math inline">\(S \rightarrow Aa \ | \ b\)</span></p>
+<p><span class="math inline">\(A \rightarrow bdA&#39; \ | \ A&#39;\)</span></p>
+<p><span class="math inline">\(A&#39; \rightarrow cA&#39; \ | \ adA&#39; \ | \ \varepsilon\)</span></p>
+<hr />
+<h2 id="left-factoring">Left Factoring</h2>
+<p>If <span class="math inline">\(A \rightarrow \alpha \beta_1 \ | \ \alpha \beta_2\)</span>,</p>
+<p>then it could be written as</p>
+<p><span class="math inline">\(A \rightarrow \alpha A&#39;\)</span></p>
+<p><span class="math inline">\(A \rightarrow \beta_1 \ | \ \beta_2\)</span></p>
+<hr />
+<h2 id="algorithm-for-constructing-first-set-for-a-grammar">Algorithm for Constructing FIRST Set for a Grammar</h2>
+<blockquote>
+<p>Algorithm for constructing the FIRST set of <span class="math inline">\(X\)</span> :</p>
+<p>Repeat until the set to be a fixed point :</p>
+<ol type="1">
+<li>If <span class="math inline">\(X\)</span> is terminal, then <span class="math inline">\(\text{FIRST}(X)=\{X\}\)</span>.</li>
+<li>If <span class="math inline">\(X \rightarrow \varepsilon\)</span> is a production, then <span class="math inline">\(\varepsilon \in \text{FIRST}(X)\)</span>.</li>
+<li>If <span class="math inline">\(X \rightarrow Y_0Y_1\cdots Y_i\)</span> and <span class="math inline">\(Y_0Y_1\cdots Y_{j-1} \rightarrow \varepsilon\)</span> where <span class="math inline">\(j &lt; i\)</span>, then <span class="math inline">\(\text{FIRST}(Y_{j}) \subseteq \text{FIRST}(X)\)</span>.</li>
+<li>If <span class="math inline">\(X \rightarrow Y_0Y_1\cdots Y_i\)</span> and <span class="math inline">\(Y_0Y_1\cdots Y_i \rightarrow \varepsilon\)</span>, then <span class="math inline">\(\varepsilon \in \text{FIRST}(X)\)</span>.</li>
+</ol>
+</blockquote>
+<hr />
+<h2 id="algorithm-for-constructing-follow-set-for-a-grammar">Algorithm for Constructing FOLLOW Set for a Grammar</h2>
+<blockquote>
+<p>Algorithm for constructing the FOLLOW set of <span class="math inline">\(X\)</span> :</p>
+<p>Repeat until the set to be a fixed point :</p>
+<ol type="1">
+<li>If <span class="math inline">\(S\)</span> is the start symbol, then put the endmarker $ in <span class="math inline">\(\text{FOLLOW}(S)\)</span>.</li>
+<li>If <span class="math inline">\(A \rightarrow \alpha B \beta\)</span>, then for every <span class="math inline">\(a \in \text{FIRST}(\beta)\)</span> except <span class="math inline">\(\varepsilon\)</span>, <span class="math inline">\(a \in \text{FOLLOW}(B)\)</span>.</li>
+<li>If <span class="math inline">\(A \rightarrow \alpha B\)</span> or <span class="math inline">\(A \rightarrow \alpha B \beta\)</span> and <span class="math inline">\(\varepsilon \in \text{FIRST}(\beta)\)</span>, then every <span class="math inline">\(a \in \text{FOLLOW}(A)\)</span>, <span class="math inline">\(a \in \text{FOLLOW}(B)\)</span>.</li>
+</ol>
+</blockquote>
+<hr />
+<h2 id="top-down-parsing">Top-Down Parsing</h2>
+<p>Beginning with the start symbol, try to guess the productions to apply to end up at the user's program.</p>
+<h3 id="parsing-as-a-search">Parsing as a search</h3>
+<ul>
+<li>Treating parsing as a graph search.</li>
+<li>Each node is a sentential form.</li>
+<li>There is an edge from node <span class="math inline">\(\alpha\)</span> to node <span class="math inline">\(\beta\)</span> iff <span class="math inline">\(\alpha \implies \beta\)</span>.</li>
+</ul>
+<hr />
+<h2 id="definition-of-ll1">Definition of <span class="math inline">\(LL(1)\)</span></h2>
+<p><strong>L</strong>eft to right <strong>L</strong>eftmost derivation with <strong>1</strong> input.</p>
+<blockquote>
+<p>For production <span class="math inline">\(A \rightarrow \alpha \ | \ \beta\)</span> :</p>
+<ol type="1">
+<li><span class="math inline">\(\text{FIRST}(\alpha) \bigcap \text{FIRST}(\beta)=\varnothing\)</span>.</li>
+<li>If <span class="math inline">\(\varepsilon \in \text{FIRST}(\alpha)\)</span>, then <span class="math inline">\(\text{FIRST}(\beta) \bigcap \text{FOLLOW}(A)=\varnothing\)</span>.</li>
+<li>If <span class="math inline">\(\varepsilon \in \text{FIRST}(\beta)\)</span>, then <span class="math inline">\(\text{FIRST}(\alpha) \bigcap \text{FOLLOW}(A)=\varnothing\)</span>.</li>
+</ol>
+</blockquote>
+<p>Predictive Table for LL(1).</p>
+<blockquote>
+<p>Algorithm for Generating Predictive Table for LL(1) :</p>
+<p>For each production <span class="math inline">\(A \rightarrow \alpha\)</span> in the grammar :</p>
+<ol type="1">
+<li>For every <span class="math inline">\(a \in \text{FIRST}(\alpha)\)</span>, add <span class="math inline">\(A \rightarrow \alpha\)</span> in <span class="math inline">\(M[A, a]\)</span>.</li>
+<li>If <span class="math inline">\(\varepsilon \in \text{FIRST}(\alpha)\)</span>, then for every <span class="math inline">\(b \in \text{FOLLOW}(A)\)</span>, add <span class="math inline">\(A \rightarrow \alpha\)</span> in <span class="math inline">\(M[A, b]\)</span>.</li>
+<li>Any entry that has no content is set to error.</li>
+</ol>
+</blockquote>
+<p><em>End of this article.</em></p>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/2022/02/13/Lexical-Analyzer/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Newer</strong>
+            <div class="article-nav-title">
+                
+                    Lexical-Analyzer
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2021/08/17/Analysis-Algorithm/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">Analysis of Algorithms</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+        <section id="comments"> 
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+ </section>
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            Junhua Liang &copy; 2023 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+        </div>
+    </div>
+</footer>
+
+        
+    
+    <script>
+    var disqus_config = function () {
+        
+            this.page.url = 'https://liangjh45.com/2022/02/13/Syntax-Analysis/';
+        
+        this.page.identifier = 'Syntax-Analysis';
+    };
+    (function() { 
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'https-liangjh45-com' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>

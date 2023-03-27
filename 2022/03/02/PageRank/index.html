@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <meta charset="utf-8">
+    
+    <title>PageRank | Junhua&#39;s Blog</title>
+    
+    
+        <meta name="keywords" content="PageRank" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="This article aims to combine the homework of MTCS at NYU to simply descripe the PageRank algorithm.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PageRank">
+<meta property="og:url" content="https://liangjh45.com/2022/03/02/PageRank/index.html">
+<meta property="og:site_name" content="Junhua&#39;s Blog">
+<meta property="og:description" content="This article aims to combine the homework of MTCS at NYU to simply descripe the PageRank algorithm.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://liangjh45.com/2022/03/02/PageRank/PAGE.png">
+<meta property="article:published_time" content="2022-03-02T22:26:08.000Z">
+<meta property="article:modified_time" content="2023-03-27T06:54:59.508Z">
+<meta property="article:author" content="Junhua Liang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://liangjh45.com/2022/03/02/PageRank/PAGE.png">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="Junhua&#39;s Blog" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Junhua&#39;s Blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">Main</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+            </nav>
+            
+            <div id="search-form-wrap">
+
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="https://liangjh45.com"></form>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">Main</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                <td>
+                    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="https://liangjh45.com"></form>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>categories</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Algorithm
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2021/08/17/Analysis-Algorithm/">Analysis of Algorithms</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Compiler
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2022/02/13/Syntax-Analysis/">Syntax-Analysis</a></li>  <li class="file"><a href="/2022/02/13/Lexical-Analyzer/">Lexical-Analyzer</a></li>  <li class="file"><a href="/2022/03/01/Bottom-Up-Parser/">Bottom-Up Parser</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Computer Architecture
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2022/03/01/Multicore/">Multicore</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            Machine Learning
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file active"><a href="/2022/03/02/PageRank/">PageRank</a></li>  <li class="file"><a href="/2022/03/24/SVM-1/">SVM</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-PageRank" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/Machine-Learning/">Machine Learning</a>
+    </div>
+
+                        
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2022/03/02/PageRank/">
+            <time datetime="2022-03-02T22:26:08.000Z" itemprop="datePublished">2022-03-02</time>
+        </a>
+    </div>
+
+
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            PageRank
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+        
+        
+            <h2 id="basic-idea-of-pagerank">Basic Idea of PageRank</h2>
+<p>PageRank works by counting the number and quality of links to a page to determine a rough estimate of how important the website is. The underlying assumption is that more important websites are likely to receive more links from other websites.</p>
+<ul>
+<li><p>A page is important just by virtue of being a page.</p></li>
+<li><p>If page <span class="math inline">\(A\)</span> links to page <span class="math inline">\(B\)</span>, then makes <span class="math inline">\(B\)</span> more important.</p>
+<ul>
+<li>The amount of important that <span class="math inline">\(B\)</span> gain (call <span class="math inline">\(I(B)\)</span>) is a constant <span class="math inline">\(F\)</span> times the important of <span class="math inline">\(A\)</span> divided by the number outlinks in <span class="math inline">\(A\)</span>.</li>
+</ul></li>
+</ul>
+<hr />
+<hr />
+<h2 id="pagerank-formula">PageRank Formula</h2>
+<h3 id="definition">Definition</h3>
+<p>The <span class="math inline">\(\text{PageRank}\)</span> of <span class="math inline">\(Q\)</span>, denoted as <span class="math inline">\(I(Q)\)</span>, could be computed with the following formula: <span class="math display">\[
+\tag{1}
+I(Q) = E + \sum_{P | P \rightarrow Q} F \cdot \frac{I(P)}{O(P)},
+\]</span> where <span class="math inline">\(E\)</span> is the inherent of the page and <span class="math inline">\(F\)</span> is the coefficient of the transfer important, <span class="math inline">\(O(P)\)</span> is the total number of links that point to <span class="math inline">\(P\)</span>.</p>
+<hr />
+<h3 id="standardization">Standardization</h3>
+<p>Suppose there are <span class="math inline">\(N\)</span> websites, and we denote them as <span class="math inline">\(P = \{ W_1, W_2, \cdots, W_N \}\)</span>, then we could calculate their <span class="math inline">\(\text{PageRank}\)</span> using formula (1). <span class="math display">\[
+\begin{align*}
+    I(W_1) &amp;= E + \sum_{P|P\rightarrow W_1}F \cdot \frac{I(P)}{O(P)}, \\
+    I(W_2) &amp;= E + \sum_{P|P\rightarrow W_2}F \cdot \frac{I(P)}{O(P)}, \\
+    \vdots \\
+    I(W_N) &amp;= E + \sum_{P|P\rightarrow W_N}F \cdot \frac{I(P)}{O(P)}, \\
+\end{align*}
+\]</span> then we could add them together: <span class="math display">\[
+\sum_{k=1}^{N}I(W_k) = N \cdot E + F \cdot \sum_{k=1}^{N}\sum_{P|P\rightarrow W_k} \frac{I(P)}{O(P)},
+\]</span> Suppose <span class="math inline">\(W_k\)</span> has <span class="math inline">\(x\)</span> outlinks, then there will be <span class="math inline">\(x\)</span> other nodes that has term <span class="math inline">\(\frac{I(W_k)}{O(W_k)}\)</span>, and thus <span class="math display">\[
+\sum_{k=1}^{N}\sum_{P|P \rightarrow W_k} \frac{I(W_k)}{O(W_k)} = x \cdot \frac{I(W_k)}{x} = I(W_k),
+\]</span> and thus <span class="math display">\[
+\sum_{k=1}^{N}I(W_k) = N \cdot E + F \cdot \sum_{k=1}^{N}I(W_k),
+\]</span> let <span class="math inline">\(S=\sum_{k=1}^{N}I(W_k)\)</span> and <span class="math inline">\(e = E/S\)</span>, then we have <span class="math inline">\(S = N \cdot E + F \cdot S\)</span>, and then we have <span class="math display">\[
+\tag{2}
+1 = N e + F
+\]</span> Hence, we prove that <span class="math inline">\(1 = N e + F\)</span>.</p>
+<hr />
+<h3 id="stochastic-matrix">Stochastic Matrix</h3>
+<p>Let <span class="math inline">\(R\)</span> be the <span class="math inline">\(N\)</span> dimensional column vector and <span class="math inline">\(R_Q\)</span> denotes the corresponding value in vector <span class="math inline">\(R\)</span> of webpage <span class="math inline">\(Q\)</span>, such that <span class="math display">\[
+R_Q = I(Q) / S.
+\]</span> Let <span class="math inline">\(M\)</span> be the <span class="math inline">\(N \times N\)</span> matrix such that <span class="math display">\[
+M[P,Q] = 
+\begin{cases}
+    e + \frac{F}{O(Q)} &amp; \quad \text{if Q points to P} \\
+    e                  &amp; \quad \text{if Q does not point to P}
+\end{cases}
+\]</span></p>
+<hr />
+<p>Now, we first show that <span class="math inline">\(M\)</span> is a stochastic matrix.</p>
+<p>For <span class="math inline">\(M[P,Q]\)</span>, suppose <span class="math inline">\(Q\)</span> has <span class="math inline">\(x\)</span> outlinks, then column <span class="math inline">\(M[:,Q]\)</span> has <span class="math inline">\(x\)</span> of <span class="math inline">\((e+\frac{F}{O(Q)})\)</span>, <span class="math inline">\(m=(N-x)\)</span> of <span class="math inline">\(e\)</span>, then <span class="math display">\[
+\begin{align*}
+    M[:,Q] &amp;= \sum_{k=1}^{N}M[P_k, Q] \\
+           &amp;= (N-x) \cdot e + x \cdot (e + \frac{F}{x}) \\
+           &amp;= N \cdot e + F \\
+           &amp;= 1
+\end{align*}
+\]</span> Hence, we prove that then sum of each column is 1, and thus <span class="math inline">\(M\)</span> is a stochastic matrix.</p>
+<hr />
+<p>Next, we want to prove that <span class="math inline">\(R\)</span> is the stationary distribution of <span class="math inline">\(M\)</span>.</p>
+<p>For node <span class="math inline">\(Q_k\)</span>, assume <span class="math inline">\(m\)</span> nodes <span class="math inline">\(X_1, X_2, \dots, X_m\)</span> point to it and <span class="math inline">\(N-m\)</span> nodes <span class="math inline">\(Y_1, Y_2, \dots, Y_{N-m}\)</span> not point to it, then <span class="math display">\[
+\begin{align*}
+    \sum_{i=1}^{N} M[Q_k, Q_i] \cdot R_i &amp;= \sum_{i=1}^{N-m} e \cdot \frac{I(Y_i)}{S} + \sum_{i=1}^{m} (e + \frac{F}{O(X_i)}) \cdot \frac{I(X_i)}{S} \\
+    &amp;= \sum_{i=1}^{N-m} e \cdot \frac{I(Y_i)}{S} + \sum_{i=1}^{m} e \cdot \frac{I(X_i)}{S} + \sum_{i=1}^{m} \frac{F}{S} \cdot \frac{I(X_i)}{O(X_i)} \\
+    &amp;= \sum_{i=1}^{N} e \cdot \frac{I(P_i)}{S} + \sum_{i=1}^{m} \frac{F}{S} \cdot \frac{I(X_i)}{O(X_i)} \\
+    &amp;= \frac{e}{S} \cdot \sum_{i=1}^{N} I(P_i) + \sum_{i=1}^{m} \frac{F}{S} \cdot \frac{I(X_i)}{O(X_i)} \\
+    &amp;= e + \frac{1}{S} \sum_{i=1}^{m} F \cdot \frac{I(X_i)}{O(X_i)} \\
+    &amp;= e + \frac{1}{S} \sum_{X|X \rightarrow Q_k} \frac{I(X)}{O(X)} \\
+    &amp;= e + \frac{1}{S} \cdot (I(Q_k) - E) \\
+    &amp;= e + \frac{I(Q_k)}{S} - e \\
+    &amp;= \frac{I(Q_k)}{S} \\
+    &amp;= R_k
+\end{align*}
+\]</span> Hence, we have <span class="math inline">\(M \cdot R = R\)</span>, and thus <span class="math inline">\(R\)</span> is the stationary vector of <span class="math inline">\(M\)</span>.</p>
+<hr />
+<hr />
+<h2 id="simple-pagerank-example">Simple PageRank Example</h2>
+<p>There are six nodes in a website as the following graph describes, with <span class="math inline">\(e=0.1\)</span> and <span class="math inline">\(F = 0.1\)</span> except <span class="math inline">\(B\)</span>, for <span class="math inline">\(B\)</span> we have <span class="math inline">\(e=0.1\alpha\)</span>.</p>
+<img src="/2022/03/02/PageRank/PAGE.png" class="">
+<p>Then according formula (2), we have <span class="math display">\[
+1 = N \cdot e + F = 5 \cdot 0.1 + 0.1\cdot \alpha + 0.1, 
+\]</span> and we get <span class="math inline">\(\alpha = 4\)</span>.</p>
+<p>Next, we should find the relationship between these nodes, <span class="math display">\[
+\begin{align*}
+    I_A &amp;= e + F \cdot (\frac{I_B}{2} + \frac{I_E}{3} + \frac{I_F}{2}) \\
+    I_B &amp;= 4 \cdot e + F \cdot (\frac{I_A}{3} + \frac{I_D}{3}) \\
+    I_C &amp;= e + F \cdot (\frac{I_B}{2} + \frac{I_D}{3} + \frac{I_E}{3}) \\
+    I_D &amp;= e + F \cdot (\frac{I_A}{3} + \frac{I_C}{2} + \frac{I_E}{3}) \\
+    I_E &amp;= e + F \cdot (\frac{I_C}{2} + \frac{I_D}{3} + \frac{I_F}{2}) \\
+    I_F &amp;= e + F \cdot (\frac{I_A}{3}) \\
+\end{align*}
+\]</span> Then, we could construct <span class="math inline">\(M\)</span> using the relationship. <span class="math display">\[
+M =
+\begin{bmatrix}
+    1 &amp; -\frac{F}{3} &amp; 0 &amp; 0 &amp; -\frac{F}{3} &amp; -\frac{F}{2} \\
+    -\frac{F}{3} &amp; 1 &amp; 0 &amp; -\frac{F}{3} &amp; 0 &amp; 0 \\
+    0 &amp; -\frac{F}{3} &amp; 1 &amp; -\frac{F}{2} &amp; -\frac{F}{3} &amp; 0 \\
+    -\frac{F}{3} &amp; 0 &amp; -\frac{F}{2} &amp; 1 &amp; -\frac{F}{3} &amp; 0 \\
+    0 &amp; -\frac{F}{3} &amp; -\frac{F}{2} &amp; -\frac{F}{3} &amp; 1 &amp; -\frac{F}{2} \\
+    -\frac{F}{3} &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 \\
+\end{bmatrix}
+\]</span> Then we have the initial vector <span class="math inline">\(R_0 = [e \quad 4e \quad e \quad e \quad e \quad e]^T\)</span>.</p>
+<p>After that, we could find the stationary one <span class="math inline">\(R_{\infty}=M \setminus R_0\)</span>.</p>
+<hr />
+<hr />
+<h2 id="reference">Reference</h2>
+<p><a target="_blank" rel="noopener" href="https://cs.nyu.edu/~davise/MathTechniques/index.html">[1]. <em>Linear Algebra and Probability for Computer Science Applications</em>. Ernest Davis.</a></p>
+<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/PageRank">[2]. Wikipedia PageRank.</a></p>
+<p><em>End of this article.</em></p>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/2022/03/24/SVM-1/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Newer</strong>
+            <div class="article-nav-title">
+                
+                    SVM
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2022/03/01/Bottom-Up-Parser/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">Bottom-Up Parser</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+        <section id="comments"> 
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+ </section>
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            Junhua Liang &copy; 2023 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+        </div>
+    </div>
+</footer>
+
+        
+    
+    <script>
+    var disqus_config = function () {
+        
+            this.page.url = 'https://liangjh45.com/2022/03/02/PageRank/';
+        
+        this.page.identifier = 'PageRank';
+    };
+    (function() { 
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'https-liangjh45-com' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>
